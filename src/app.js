@@ -13,6 +13,8 @@ app.use(express.json());
 // ROUTE GET
 //===================
 
+app.use('/api/auth', require('./services/auth/auth.route'));
+
 app.get('/', async (req, res) => {
     try {
         const connection = await pool.getConnection();
