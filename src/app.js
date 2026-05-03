@@ -2,7 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const PORT = process.env.PORT || 3000;
 const pool = require('./models/db.js');
-
+const { authenticate } = require('./middlewares/auth.middleware');
+const { requireAdmin } = require('./middlewares/role.middleware');
 dotenv.config();
 
 const app = express();
@@ -30,6 +31,29 @@ app.get('/', async (req, res) => {
         })
     }
 });
+
+//================================
+//Route test đăng ký và đăng nhập 
+//================================
+
+
+// Đăng nhập
+app.get('/api/protected', authenticate, (req, res) => {
+    res.json({
+        success : true,
+        message : `Xin chao ${req.user.name}!`,
+        role : req.user.role
+    })
+})
+
+// cho admin
+app.get('/api/admin', authenticate, requireAdmin, (req, res) => {
+    res.json({
+        success : true,
+        message : 'Bạn là admin!'
+    })
+})
+
 
 
 //====================
