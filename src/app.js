@@ -4,11 +4,16 @@ const PORT = process.env.PORT || 3000;
 const pool = require('./models/db.js');
 const { authenticate } = require('./middlewares/auth.middleware');
 const { requireAdmin } = require('./middlewares/role.middleware');
+const logger = require('./middlewares/logger.middleware.js');
+const limiter = require('./middlewares/rateLimit.middleware.js')
+
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+app.use(logger);
+app.use(limiter);
 
 //===================
 // ROUTE GET
