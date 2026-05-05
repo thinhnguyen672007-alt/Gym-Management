@@ -1,3 +1,6 @@
+// sau khi đăng nhập server sẽ tự cung cấp một token cho clients sẽ tự lưu ở localStorage hoặc session 
+// khi có token này khi reload hoặc quay lại trang web người dùng ko mất công phải đăng nhập lại 
+// đoạn token này sẽ hết hạn trong 7 ngày, sau 7 ngày thì người dùng sẽ phải đăng nhập lại
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 

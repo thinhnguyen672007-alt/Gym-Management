@@ -54,7 +54,24 @@ const login = async (email, password) => {
     }
 }
 
-module.exports = { register, login } // có ngoặc là bởi vì dự án có thể lớn thêm dùng vậy để đóng gói 
+const createAdmin = async (name, email, password) => {
+    const [existingUsers] = await pool.query(
+        'select id from users where email = ?', [email]
+    );
+    if (existingUsers.length > 0) {
+        throw new Error("Email này đã được sử dụng!");
+    }
+    const hashedPassword = await bcrypt.hash(password, 10); // Mã hóa mật khẩu 
+
+    const [result] = await pool.query(
+        'insert into users (name, email, password, role) values (?, ?, ?, ?)',
+        [name, email, hashedPassword, 'admin']
+    );
+
+    return {userId: result.insertId, name, email, role: 'admin'};
+}
+
+module.exports = { register, login, createAdmin } // có ngoặc là bởi vì dự án có thể lớn thêm dùng vậy để đóng gói 
 
 
 

@@ -1,10 +1,10 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv'); // thư viên quản lý biên môi trường trong .evn
 const PORT = process.env.PORT || 3000;
 const pool = require('./models/db.js');
 const { authenticate } = require('./middlewares/auth.middleware');
 const { requireAdmin } = require('./middlewares/role.middleware');
-const logger = require('./middlewares/logger.middleware.js');
+const logger = require('./middlewares/logger.middleware.js'); 
 const limiter = require('./middlewares/rateLimit.middleware.js')
 
 dotenv.config();
@@ -12,8 +12,8 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(logger);
-app.use(limiter);
+app.use(logger); // global middleware
+app.use(limiter); // global middleware
 
 //===================
 // ROUTE GET
