@@ -13,6 +13,7 @@ dotenv.config();
 
 const app = express();
 
+app.use('/api/packages', require("./services/package/package.route.js"))
 app.use(express.json());
 app.use(logger); // global middleware
 app.use(limiter); // global middleware
