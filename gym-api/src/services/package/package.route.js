@@ -6,5 +6,7 @@ const {requireAdmin} = require('../../middlewares/role.middleware.js');
 
 router.get("/", authenticate, packageController.getAllPackages);
 router.post("/", authenticate, requireAdmin, packageController.createPackage);
+router.put("/:id", authenticate, requireAdmin, packageController.updatePackage);
+router.delete("/:id", authenticate, requireAdmin, packageController.deletePackage);
 
 module.exports = router;

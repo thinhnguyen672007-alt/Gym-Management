@@ -54,4 +54,48 @@ const createPackage = async (req, res) => {
     }
 }
 
-module.exports = { getAllPackages, createPackage};
+const updatePackage = async (req, res) => {
+     try {
+        const {id} = req.params;
+        const {name, price, duration_days, description} = req.body;
+
+        if(!name || !price || !duration_days || !description) {
+            return res.json({
+                success : false,
+                message : "Vui lòng điền đầy đủ thông tin trước khi thêm gói tập mới!"
+            })
+        }
+
+        const packageUpdated = await packageService.updatePackage(id, name, price, duration_days, description)
+
+        res.status(201).json({
+            success : true,
+            message : "Cập nhật gói tập THÀNH CÔNG!"
+        })
+    } catch(error) {
+        res.status(500).json({
+            success : false,
+            message : error.message
+        })
+    }
+}
+
+const deletePackage = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        const packageDeleted = await packageService.deletePackage(id);
+
+        res.status(201).json({
+            success : true,
+            message : "Xóa gói tập THÀNH CÔNG!"
+        })
+    } catch(error) {
+        res.status(500).json({
+            success : false,
+            message : error.message
+        })
+    }
+}
+
+module.exports = { getAllPackages, createPackage, updatePackage, deletePackage};
