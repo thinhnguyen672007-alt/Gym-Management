@@ -1,4 +1,5 @@
 const pool = require("../../models/db.js");
+const AppError = require("../../utlis/AppError")
 
 const getAllPackages = async () => {
     const [packages] = await pool.query(
@@ -28,7 +29,7 @@ const updatePackage = async (id, name, price, duration_days, description) => {
     )
 
     if(existing.length === 0) {
-        throw new Error("Gói tập này không tồn tại!");
+        throw new AppError("Gói tập này không tồn tại!", 404);
     }
 
     const [result] = await pool.query(
@@ -50,7 +51,7 @@ const deletePackage = async (id) => {
     )
 
     if(existing.length === 0) {
-        throw new Error("Gói tập này không tồn tại!");
+        throw new AppError("Gói tập này không tồn tại!", 404);
     }
 
     await pool.query(

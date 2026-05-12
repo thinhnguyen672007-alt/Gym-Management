@@ -6,6 +6,7 @@ const limiter = require('./middlewares/rateLimit.middleware.js');
 const pool = require('./models/db.js');
 const { authenticate } = require('./middlewares/auth.middleware');
 const { requireAdmin } = require('./middlewares/role.middleware');
+const errorHandler = require('./middlewares/error.middleware')
 
 dotenv.config(); // phải gọi trước khi dùng process.env
 
@@ -18,9 +19,12 @@ app.use(express.json());
 app.use(logger);
 app.use(limiter);
 
+
 // ── ROUTES ──
 app.use('/api/auth', require('./services/auth/auth.route'));
 app.use('/api/packages', require('./services/package/package.route.js'));
+
+app.use(errorHandler);
 
 // ── TEST ROUTES ──
 app.get('/', async (req, res) => {

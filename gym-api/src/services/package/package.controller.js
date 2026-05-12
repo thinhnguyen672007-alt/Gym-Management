@@ -1,6 +1,6 @@
 const packageService = require('./package.service');
 
-const getAllPackages = async (req, res) => {
+const getAllPackages = async (req, res, next) => {
     try {
         const packages = await packageService.getAllPackages()
         res.status(200).json({
@@ -8,14 +8,11 @@ const getAllPackages = async (req, res) => {
             data : packages
         })
     } catch(error) {
-        res.status(500).json({
-            success : false,
-            message : error.message
-        })
+       next(error);
     }
 }
 
-const createPackage = async (req, res) => {
+const createPackage = async (req, res, next) => {
     try {
         const {name, price, duration_days, description} = req.body 
 
@@ -47,14 +44,11 @@ const createPackage = async (req, res) => {
             message : "Tạo một gói tập mới THÀNH CÔNG!"
         })
     } catch (error) {
-        res.status(500).json({
-            success : false,
-            message : error.message
-        })
+        next(error);
     }
 }
 
-const updatePackage = async (req, res) => {
+const updatePackage = async (req, res, next) => {
      try {
         const {id} = req.params;
         const {name, price, duration_days, description} = req.body;
@@ -73,14 +67,11 @@ const updatePackage = async (req, res) => {
             message : "Cập nhật gói tập THÀNH CÔNG!"
         })
     } catch(error) {
-        res.status(500).json({
-            success : false,
-            message : error.message
-        })
+        next(error);
     }
 }
 
-const deletePackage = async (req, res) => {
+const deletePackage = async (req, res, next) => {
     try {
         const {id} = req.params;
 
@@ -91,10 +82,7 @@ const deletePackage = async (req, res) => {
             message : "Xóa gói tập THÀNH CÔNG!"
         })
     } catch(error) {
-        res.status(500).json({
-            success : false,
-            message : error.message
-        })
+        next(error);
     }
 }
 
