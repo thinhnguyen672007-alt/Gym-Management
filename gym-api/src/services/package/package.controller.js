@@ -26,14 +26,14 @@ const createPackage = async (req, res, next) => {
         if(price <= 100000) {
             return res.json({
                 success : false,
-                message : "Giá tối thiểu cho một gói tập là 100000 VNĐ"
+                message : "Giá tối thiểu cho một gói tập là 100000 VNĐ!"
             })
         }
 
         if(duration_days <= 30) {
             return res.json({
                 success : false,
-                message : "Ngày tối thiểu cho một gói tập là 30 ngày "
+                message : "Ngày tối thiểu cho một gói tập là 30 ngày!"
             })
         }
 

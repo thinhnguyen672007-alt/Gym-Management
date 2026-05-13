@@ -31,7 +31,7 @@ app.get('/', async (req, res) => {
     try {
         const connection = await pool.getConnection();
         connection.release();
-        res.json({ success: true, message: 'Kết nối database thành công!' });
+        res.json({ success: true, message: 'Chúc mừng, kết nối database thành công!' });
     } catch(error) {
         res.status(500).json({ success: false, message: 'Kết nối database thất bại: ' + error.message });
     }
