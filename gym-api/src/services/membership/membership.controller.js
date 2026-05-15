@@ -1,5 +1,5 @@
 const membershipService = require('./membership.service.js');
-const AppError = require('../../utils/AppError');
+const AppError = require('../../utlis/AppError');
 
 const createMembership = async (req, res, next) => {
     try {
