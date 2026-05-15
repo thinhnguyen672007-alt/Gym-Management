@@ -2,7 +2,7 @@ const pool = require("../../models/db.js");
 const AppError = require("../../utlis/AppError");
 
 // tạo membership\
-const createMembership = async () => {
+const createMembership = async (userId, packageId) => {
     const [packages] = await pool. query(
         'select * from packages where id = ? ', [packageId]
     )
@@ -18,7 +18,7 @@ const createMembership = async () => {
     )
 
     if(existing.length > 0) {
-        throw new AppError("Bạn đã có hoặc vẫn đang trong thời gian gói tập, vui lòng hủy để đăng ký gói tập khác!")
+        throw new AppError("Bạn đã có hoặc vẫn đang trong thời gian gói tập, vui lòng hủy để đăng ký gói tập khác!",400)
     }
 
     const startDate = new Date();
@@ -28,7 +28,7 @@ const createMembership = async () => {
 
     const formatDate = (date) => date.toISOString().split('T')[0];
 
-    const [results] = await pool.query(
+    const [result] = await pool.query(
         "insert into memberships (user_id, package_id, start_date, end_date) value (?, ?, ?, ?)",
         [userId, packageId, formatDate(startDate), formatDate(endDate)]
     )
@@ -38,7 +38,7 @@ const createMembership = async () => {
         from memberships m
         join packages p on m.package_id = p.id
         where m.id = ?`,
-        [results.insertId]
+        [result.insertId]
     )
     return memberships[0];
 }
