@@ -1,4 +1,4 @@
-// khai báo thư viện cũng dư AppError để xử lý lỗ
+// khai báo thư viện cũng dư AppError để xử lý lỗi
 const { validationResult }= require('express-validator');
 const AppError = require('../utlis/AppError');
 
