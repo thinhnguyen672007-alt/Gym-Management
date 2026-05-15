@@ -5,4 +5,4 @@ const { authenticate } = require('../../middlewares/auth.middleware');
 
 router.post("/", authenticate, membershipController.createMembership)
 
-module.exports = router
+module.exports = router;

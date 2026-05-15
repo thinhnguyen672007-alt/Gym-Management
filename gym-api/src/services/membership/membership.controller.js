@@ -6,11 +6,11 @@ const createMembership = async (req, res, next) => {
         const userId = req.user.userId;
         const { package_id } = req.body;
         if(!package_id) {
-            return new AppError("Vui long chọn tập!, 400");
+            return next(new AppError("Vui long chọn tập!, 400"));
         }
 
 
-        const membership = await membershipService.createMembership(userId,package_id)
+        const membership = await membershipService.createMembership(userId,package_id);
 
         res.status(201).json({
             success: true,

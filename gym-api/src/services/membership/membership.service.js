@@ -14,7 +14,7 @@ const createMembership = async (userId, packageId) => {
     const package_ = packages[0];
 
     const [existing] = await pool.query(
-        'select * from memberships where user_id = ? and status " active" ', [userId]
+        'select * from memberships where user_id = ? and status =" active" ', [userId]
     )
 
     if(existing.length > 0) {
@@ -29,12 +29,12 @@ const createMembership = async (userId, packageId) => {
     const formatDate = (date) => date.toISOString().split('T')[0];
 
     const [result] = await pool.query(
-        "insert into memberships (user_id, package_id, start_date, end_date) value (?, ?, ?, ?)",
+        "insert into memberships (user_id, package_id, start_date, end_date) values (?, ?, ?, ?)",
         [userId, packageId, formatDate(startDate), formatDate(endDate)]
     )
 
     const [memberships] = await pool.query (
-        `select m.*, p.name as packageName, p.price, p.duration_days
+        `select m.*, p.name as package_name, p.price, p.duration_days
         from memberships m
         join packages p on m.package_id = p.id
         where m.id = ?`,
