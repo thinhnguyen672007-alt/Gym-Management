@@ -23,6 +23,7 @@ app.use(limiter);
 // ── ROUTES ──
 app.use('/api/auth', require('./services/auth/auth.route'));
 app.use('/api/packages', require('./services/package/package.route.js'));
+app.use('/api/memberships', require('./services/membership/membership.route'));
 
 app.use(errorHandler);
 
