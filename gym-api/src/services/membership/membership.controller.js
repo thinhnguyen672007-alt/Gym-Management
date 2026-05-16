@@ -1,12 +1,26 @@
 const membershipService = require('./membership.service.js');
 const AppError = require('../../utlis/AppError');
 
+const getMyMemberships = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        const memberships = await membershipService.getMyMemberships(userId);
+
+        res.status(201).json({
+            success: true,
+            data: memberships
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const createMembership = async (req, res, next) => {
     try {
         const userId = req.user.userId;
         const { package_id } = req.body;
         if(!package_id) {
-            return next(new AppError("Vui long chọn tập!, 400"));
+            return next(new AppError("Vui long chọn tập!", 400));
         }
 
 
@@ -14,7 +28,7 @@ const createMembership = async (req, res, next) => {
 
         res.status(201).json({
             success: true,
-            message: 'Đăng ký gói tập thành công',
+            message: 'Chúc Mừng,bạn đã đăng ký gói tập thành công!',
             data: membership
         });
     } catch(error) {
@@ -22,4 +36,6 @@ const createMembership = async (req, res, next) => {
     }
 }
 
-module.exports = { createMembership };
+
+
+module.exports = { createMembership, getMyMemberships };
