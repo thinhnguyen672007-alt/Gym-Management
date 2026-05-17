@@ -23,6 +23,29 @@ const getMyMemberships = async (userId) => {
     return memberships;
 }
 
+const getAllMemberships = async () => {
+    const [memberships] = await pool.query(
+        `select m.*,
+        u.name as user_name, u.email as user_email,
+        p.name as package_name, p.price, p.duration_days
+        from memberships m
+        join users u on m.user_id = u.id
+        join packages p on m.package_id = p.id 
+        order by m.created_at desc`
+    )
+    const today = new Date().toISOString().split('T')[0];
+    for (const m of memberships) {
+        if (m.status === 'active' && m.end_date < today) {
+            await pool.query(
+                'UPDATE memberships SET status = "expired" WHERE id = ?', [m.id]
+            );
+            m.status = 'expired';
+        }
+    }
+
+    return memberships;
+}
+
 // tạo membership\
 const createMembership = async (userId, packageId) => {
     const [packages] = await pool.query(
@@ -65,7 +88,7 @@ const createMembership = async (userId, packageId) => {
     return memberships[0];
 }
 
-module.exports = { createMembership, getMyMemberships};
+module.exports = { createMembership, getMyMemberships, getAllMemberships};
 
 // kiểm tra gói tập đó có tồn tại hay không 
 
