@@ -1,6 +1,18 @@
 const membershipService = require('./membership.service.js');
 const AppError = require('../../utlis/AppError');
 
+const getAllMemberships = async (rep, res, next) => {
+    try {
+        const memberships = await membershipService.getAllMemberships();
+        res.status(201).json({
+            success: true,
+            data: memberships
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 const getMyMemberships = async (req, res, next) => {
     try {
         const userId = req.user.userId;
@@ -38,4 +50,4 @@ const createMembership = async (req, res, next) => {
 
 
 
-module.exports = { createMembership, getMyMemberships };
+module.exports = { createMembership, getMyMemberships, getAllMemberships };
