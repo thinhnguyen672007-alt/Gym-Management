@@ -7,6 +7,8 @@ const { requireAdmin } = require('../../middlewares/role.middleware');
 router.post("/", authenticate, membershipController.createMembership);
 router.get("/me", authenticate, membershipController.getMyMemberships);
 router.get("/all", authenticate, requireAdmin, membershipController.getAllMemberships);
+router.put("/:id/cancel", authenticate, membershipController.cancelMembership);
+
 
 
 module.exports = router;

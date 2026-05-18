@@ -48,6 +48,22 @@ const createMembership = async (req, res, next) => {
     }
 }
 
+const cancelMembership = async (req, res, next) => {
+    try{
+        const { id } = req.params;
+        const userId = req.user.userId;
+
+        const result = await membershipService.cancelMembership(id, userId)
+
+         res.status(201).json({
+            success: true,
+            message: 'Bạn đã xóa membership thành công!',
+            data : result
+        });
+    } catch (error) {
+        next(error);
+    }
+}
 
 
-module.exports = { createMembership, getMyMemberships, getAllMemberships };
+module.exports = { createMembership, getMyMemberships, getAllMemberships, cancelMembership };

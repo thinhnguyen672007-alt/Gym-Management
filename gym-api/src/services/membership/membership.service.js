@@ -87,13 +87,39 @@ const createMembership = async (userId, packageId) => {
     )
     return memberships[0];
 }
+// tạo cancelmembership 
+// kiểm tra membership có tồn tại không 
+// kiểm tra membership này có thuộc quyền sở hữu của user này không 
+// kểm tra status có active không 
+// cập nhật status thành cancelled 
+// return ra cái id của membership và trạng thái là cancelled 
+const cancelMembership = async (membershipId, userId) => {
+    const [memberships] = await pool.query(
+        'select * from memberships where id = ?', [membershipId]
+    )
 
-module.exports = { createMembership, getMyMemberships, getAllMemberships};
+    if (memberships.length === 0) {
+        throw new AppError("Membership này không tồn tại vui lòng thử lại!", 404);
+    }
 
-// kiểm tra gói tập đó có tồn tại hay không 
+    const membership = memberships[0];
 
-// kiểm tra user có membership hay chưa 
+    if (membership.user_id  !== userId) {
+        throw new AppError("Bạn không thuộc quyền sở hữu gói membership này!", 403);
+    }
 
-// tính startDate vả endDate 
+    if( membership.status !== 'active')  {
+        throw new AppError( `Không thể hủy membership khi có status là: ${membership.status}`, 400)
+    }
 
-// lưu vào database 
+    await pool.query(
+        `update memberships set status = 'cancelled' where id = ?`, [membershipId]
+    )
+
+    return {id : membershipId, status : 'cancelled'};
+}
+
+
+
+module.exports = { createMembership, getMyMemberships, getAllMemberships, cancelMembership};
+
